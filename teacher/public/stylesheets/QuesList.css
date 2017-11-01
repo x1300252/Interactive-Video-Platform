@@ -1,0 +1,21 @@
+#ques-list-block {
+  width: 300px;
+  position: absolute;
+  right: -310px;
+  top: 10px;
+  bottom: 10px;
+}
+#ques-list-block #ques-list {
+  overflow-y: auto;
+}
+#ques-list-block #ques-list::-webkit-scrollbar {
+  position: relative;
+  width: 5px;
+  background-color: #ccc;
+}
+#ques-list-block #ques-list::-webkit-scrollbar-thumb {
+  background-color: #999;
+}
+#ques-list-block .quesCard {
+  min-height: 49px;
+}

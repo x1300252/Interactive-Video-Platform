@@ -1,0 +1,37 @@
+button {
+  border: none;
+  outline: none;
+}
+.wrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  z-index: 2147483647;
+}
+.circle {
+  position: relative;
+  padding: 0px;
+  margin: 0px auto;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  opacity: 0.5;
+  display: flex;
+  transition: 0.2s;
+}
+.circle i {
+  margin: auto;
+  width: 30px;
+  height: 30px;
+  transition: 0.5s;
+}
+#add-btn {
+  background-color: #555;
+}
+#return-ques-btn,
+#branch-goto-btn {
+  display: none;
+  background-color: #FF004E;
+}

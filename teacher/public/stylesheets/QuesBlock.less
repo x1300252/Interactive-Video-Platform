@@ -1,0 +1,111 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+#QuesBlock {
+  display: none;
+
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  right: 50px;
+  bottom: 40px;
+  z-index: 1;
+
+  background: white;
+ // max-width: 400px;
+  margin: 0 auto;
+  padding: 50px;
+
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.20);
+
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+
+  .ctrl-btn {
+    background-color: rgba(0, 0, 0, 0);
+    margin: 0;
+  }
+
+  #back-btn,
+  #edit-btn,
+  #trash-btn {
+    display: none;
+  }
+
+  .ques-type-btn{
+    display: block;
+    width: 100%;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    padding: 20px;
+
+    background-color: #27B1BE;
+    border-radius: 0px;
+    border: 0px;
+  }
+
+  #editMode {
+    display: none;
+
+    width: 520px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  #window-btn {
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    right: -40px;
+  }
+
+  #selectType {
+    display: block;
+  }
+
+  #addSection {
+    color: black;
+    background: white;
+    border-width: 1.5px;
+    border-style: dashed;
+  }
+
+  #editQues {
+    width: 490px;
+  }
+}
+
+#editMode::-webkit-scrollbar
+{
+  position: relative;
+	width: 5px;
+	background-color: #ccc;
+}
+
+#editMode::-webkit-scrollbar-thumb
+{
+	background-color: #999;
+}
+
+#quesSections {
+  width: 100%;
+  
+  .check_btn,
+  .goto_btn {
+    width: auto;
+  }
+
+  input[type=radio], 
+  input[type=checkbox]  {
+    display: none;
+  }
+}
+
+  

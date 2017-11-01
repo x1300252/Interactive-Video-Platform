@@ -1,0 +1,83 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+#QuesBlock {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  right: 50px;
+  bottom: 40px;
+  z-index: 1;
+  background: white;
+  margin: 0 auto;
+  padding: 50px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.2);
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+}
+#QuesBlock .ctrl-btn {
+  background-color: rgba(0, 0, 0, 0);
+  margin: 0;
+}
+#QuesBlock #back-btn,
+#QuesBlock #edit-btn,
+#QuesBlock #trash-btn {
+  display: none;
+}
+#QuesBlock .ques-type-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #27B1BE;
+  border-radius: 0px;
+  border: 0px;
+}
+#QuesBlock #editMode {
+  display: none;
+  width: 520px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+#QuesBlock h1 {
+  font-weight: bold;
+  font-size: 30px;
+}
+#QuesBlock #window-btn {
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  right: -40px;
+}
+#QuesBlock #selectType {
+  display: block;
+}
+#QuesBlock #addSection {
+  color: black;
+  background: white;
+  border-width: 1.5px;
+  border-style: dashed;
+}
+#QuesBlock #editQues {
+  width: 490px;
+}
+#editMode::-webkit-scrollbar {
+  position: relative;
+  width: 5px;
+  background-color: #ccc;
+}
+#editMode::-webkit-scrollbar-thumb {
+  background-color: #999;
+}
+#quesSections {
+  width: 100%;
+}
+#quesSections .check_btn,
+#quesSections .goto_btn {
+  width: auto;
+}
+#quesSections input[type=radio],
+#quesSections input[type=checkbox] {
+  display: none;
+}

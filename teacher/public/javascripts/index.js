@@ -91,7 +91,7 @@ function addSec(sectext, ans) {
         'type': "button",
         'class': "btn btn-outline-success goto_btn"+(ans!=-1?" active":""),
         'aria-pressed': "false",
-        'onclick': "goTo($(this))"
+        'onclick': "goTo("+$('#quesSections > .section').length+")"
       }).text(ans==-1 ? "go to" : timeTransfer(ans))).append($("<input>", {
         'name': "ans",
         'type': "hidden",
@@ -132,7 +132,8 @@ function addSec(sectext, ans) {
     row.append(ansbtn, secbox,delbtn);
   }
 
-function goTo(btn) {
+function goTo(btnIndex) {
+    selectBtn = $('#quesSections > .section').eq(btnIndex).find('.goto_btn');
     $('#circle-btn').show()
     $('#branch-goto-btn').show();
     $('#QuesBlock').hide();
@@ -140,13 +141,13 @@ function goTo(btn) {
     playerInstance.setControls(true);
     playerInstance.play(false);
 
-    console.log(btn);
+    console.log(btnIndex);
 
     $('#branch-goto-btn').click(function() {
-        btn.html(timeTransfer(playerInstance.getPosition('VOD')));
-        btn.next("input").val(Math.floor(playerInstance.getPosition('VOD')));
-        btn.removeClass("btn-outline-success");
-        btn.addClass("btn-success active");
+        selectBtn.text(timeTransfer(playerInstance.getPosition('VOD')));
+        selectBtn.next("input").val(Math.floor(playerInstance.getPosition('VOD')));
+        selectBtn.removeClass("btn-outline-success");
+        selectBtn.addClass("btn-success active");
     });
 }
 

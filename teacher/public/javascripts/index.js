@@ -15,7 +15,14 @@ function popBlock() {
 
     playerInstance.setControls(false);
     playerInstance.pause(true);
-    
+}
+
+function maxBlock() {
+    $('.circle').hide();
+    $('#QuesBlock').show();
+
+    playerInstance.setControls(false);
+    playerInstance.pause(true);
 }
 
 function setTime() {
@@ -279,7 +286,7 @@ function preview(id) {
             popBlock();
         
             $('#update-btn, #trash-btn').show();
-            $('#mini-btn, #back-btn, #selectType, #editMode').hide();
+            $('#back-btn, #selectType, #editMode').hide();
 
             $('#previewMode').show();
 
@@ -293,7 +300,7 @@ function preview(id) {
 
     $("#update-btn").click(function() {
         $('#previewMode, #submitGroup, #trash-btn, #update-btn').hide();
-        $('#editMode, #updateGroup, #mini-btn').show();
+        $('#editMode, #updateGroup').show();
 
         $('#questype').val(quesData.type);
         $('#time').val(quesData.time);

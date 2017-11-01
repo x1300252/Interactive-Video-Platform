@@ -18,6 +18,13 @@ db.connect(function(err) {
 });
 /* GET home page. */
 router.get('/', function(req, res) {
+  var sql = "ALTER TABLE teacher AUTO_INCREMENT = 0";
+  
+    db.query(sql, function(err, rows) {
+      if (err) {
+        console.log(err);
+      }
+  });
   res.render('index');
 });
 
@@ -69,5 +76,17 @@ router.delete('/delete/:id', function(req, res) {
   res.redirect(303, '/');
 });
 
+router.put('/update/:id', function(req, res) {
+  var id = req.params.id;
+  var sql = "UPDATE todo SET  WHERE id = ?";
+
+  db.query(sql, id, function(err, rows) {
+    if (err) {
+      console.log(err);
+    }
+  });
+
+  res.redirect(303, '/');
+});
 
 module.exports = router;

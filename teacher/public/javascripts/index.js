@@ -1,9 +1,39 @@
 $(document).ready(function() {
+    resetForm();
     $("#quesForm").validate();
     data = $.getJSON("/getList", function(data) {
         for (var i = 0; i < data.length; i++)
             addToList(data[i].time, data[i].id, data[i].title);
-    }); 
+    });
+});
+
+$.validator.setDefaults({
+    submitHandler:function(form, event){
+        var status = submitQues();
+        if (status) {
+            resetForm();
+            if ($("input[name='submit']").val() == "save") {
+                closeBlock(); 
+            } else {
+                setTime();
+            }
+        }
+        return false;
+    },
+    errorPlacement: function(error, element) {
+        return false;
+    },
+    errorClass: "errorInput",
+    highlight:function(element, errorClass, validClass){
+        $(element).addClass(errorClass);      
+    },
+    unhighlight:function(element, errorClass, validClass){
+        $(element).removeClass(errorClass);      
+    }
+});
+
+$().ready(function() {
+    $("#quesForm").validate();
 });
 
 function popBlock() {
@@ -80,11 +110,16 @@ function selectType(e) {
     }
 }
 
-function addSec(sectext, ans) {
+function addSecBtnStatus() {
     if ($('#quesSections > .section').length == 4) {
-      alert("too many sections!");
-      return;
+        $('#addSection').prop("disabled", true);
     }
+    else {
+        $('#addSection').prop("disabled", false);
+    }
+}
+
+function addSec(sectext, ans) {
     var container = $("#quesSections");
     
     var row = $("<div>", {
@@ -118,18 +153,18 @@ function addSec(sectext, ans) {
     }
 
     var secbox = $("<input>", {
-        'name': "sec",
+        'name': "sec"+$("#addSection").attr("cnt"),
         'type': "text",
         'placeholder': "section",
-        'class': "form-control sectionInput"
-    }).prop('required',true).val(sectext);
+        'class': "form-control sectionInput required"
+    }).val(sectext);
 
     var delbtn = $("<span>", {
       'class': "input-group-btn"
     }).append($("<button>", {
       'type': "button",
       'class': "btn btn-danger delSection",
-      'onclick': "$(this).closest('.section').remove()"
+      'onclick': "$(this).closest('.section').remove(); addSecBtnStatus();"
     }).append($("<i>", {
       'class': "fa fa-minus",
       'aria-hidden': "true"
@@ -137,6 +172,8 @@ function addSec(sectext, ans) {
 
     container.append(row);
     row.append(ansbtn, secbox,delbtn);
+    $("#addSection").attr("cnt", $("#addSection").attr("cnt")+1);
+    addSecBtnStatus();
   }
 
 function goTo(btnIndex) {
@@ -157,32 +194,6 @@ function goTo(btnIndex) {
         selectBtn.addClass("btn-success active");
     });
 }
-
-$.validator.setDefaults({
-    rule: {
-        input: {required: true}
-    },
-    messages: {
-        required: "請填寫這個欄位"
-    },
-    submitHandler:function(form, event){
-        var status = submitQues();
-        if (status) {
-            resetForm();
-            if ($("input[name='submit']").val() == "save") {
-                closeBlock(); 
-            } else {
-                setTime();
-            }
-        }
-    },
-    highlight:function(element, errorClass, validClass){
-        $(element).addClass(errorClass).removeClass(validClass);      
-    },
-    unhighlight:function(element, errorClass, validClass){
-        $(element).removeClass(errorClass).addClass(validClass);      
-    }
-});
 
 function addToList(time, num, title) {
     $('#ques-list').append($("<button>", {
@@ -218,29 +229,21 @@ function resetForm() {
     $("#quesSections > .section").remove();
     $("#quesForm")[0].reset();
     $("#selectType").show();
-    $("#editMode").hide();
-    $("#back-btn").hide();
+    $("#editMode, #back-btn").hide();
+    $("#addSection").attr("cnt", "0");
 }
 
-function submitQues() {
-    if ($('#quesSections > .section').length == 0) {
-        alert("please add sections!");
-        return false;
-    }
-
-    var at = $('#time').val();
-    var time = Math.floor(at);
-
+function quesSerialize() {
     var quesData = {
         'type': $('#questype').val(),
         'title': $('#title').val(),
         'des': $('#description').val(),
         'exp': $('#explain').val(),
         'secnum': $("input[name='sec']").length,
-        'time': time
+        'time': Math.floor($('#time').val())
     }
 
-    var data = $("input[name='sec']");
+    var data = $("input[name^='sec']");
     var len = data.length;
     var sec = [];
     for(i=0 ; i<len; i++) {
@@ -261,12 +264,23 @@ function submitQues() {
         }
     }
 
+    return quesData;
+}
+
+function submitQues() {
+    if ($('#quesSections > .section').length == 0) {
+        alert("please add sections!");
+        return false;
+    }
+
+    var quesData = quesSerialize();
+
     $.ajax({
         url: "addQues/",
         type: 'POST',
         data: quesData,
         success: function(result) {
-            addToList(time, result.id, quesData.title);
+            addToList(quesData.time, result.id, quesData.title);
             sortQuesList();
         }
     });
@@ -295,6 +309,7 @@ function preview(id) {
             $('#pre-explain').text(quesData.exp);
 
             $("#trash-btn, #deleteQues").attr("onclick","delQues("+id+")");
+            $("#updateQues").attr("onclick","updateQues("+id+")");
         }
     });
 
@@ -325,9 +340,14 @@ function delQues(id) {
     });
 }
 
-function leavePage() {
+function updateQues(id) {
+    var quesData = quesSerialize();
     $.ajax({
-        url: "leave/",
+        url: "update/"+id,
         type: 'PUT',
+        success: function() {
+            closeBlock();
+            $('#quesCard'+id)[0].text(quesData.time+" "+quesData.title);
+        }
     });
-};
+}

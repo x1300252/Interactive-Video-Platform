@@ -81,3 +81,7 @@
 #quesSections input[type=checkbox] {
   display: none;
 }
+
+.errorInput {
+  border-color:red;
+}

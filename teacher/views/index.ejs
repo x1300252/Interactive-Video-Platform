@@ -26,7 +26,7 @@
   <link rel="stylesheet" type="text/css" href="/stylesheets/QuesList.css">
 </head>
 
-<body  onbeforeunload="leavePage()">
+<body>
 
   <div id="video_box" class="video">
       <div id="myElement">This text will be replaced with a player.</div>
@@ -95,22 +95,22 @@
 
         </div>
         <div id="editMode" class="container quesSlides">
-          <form id="quesForm" class="form-group quesForm" method="POST" onsubmit="return false;">
+          <form id="quesForm" class="form-group quesForm" method="POST">
             <h1>Edit Question</h1>
-            <input id="questype" type="hidden" name="questype" value="" required/>
-            <input id="time" type="hidden" name="time" value="" required/>
-            <input id="title" type="text" name="title" placeholder="title" class="form-control my-2" required/>
-            <textarea id="description" name="description"placeholder="description" class="form-control my-2" required></textarea>
+            <input id="questype" type="hidden" name="questype" value=""/>
+            <input id="time" type="hidden" name="time" value=""/>
+            <input id="title" type="text" name="title" placeholder="title" class="form-control my-2 required"/>
+            <textarea id="description" name="description"placeholder="description" class="form-control my-2 required"></textarea>
             
             <div id="quesSections" class="btn-group btn-group-vertical" data-toggle="buttons">
             </div>
-            <button type="button" id="addSection" class="btn btn-primary my-1 p-2 w-100" onclick="addSec('', -1)">add section</button>
+            <button type="button" id="addSection" class="btn btn-primary my-1 p-2 w-100" cnt="0" onclick="addSec('', -1)">add section</button>
             
-            <textarea id="explain" name="explain" placeholder="explain" class="form-control my-2" required></textarea>
+            <textarea id="explain" name="explain" placeholder="explain" class="form-control my-2 required"></textarea>
             
             <div id='submitGroup' class="btn-group w-100" role="group">
-              <button type="submit" name="submit" id="submitQues" class="btn btn-outline-primary my-1 p-2 w-100" value="save">save</button>
-              <button type="submit" name="submit" id="addNextQues" class="btn btn-outline-primary my-1 p-2 w-100" value="addNext">save and add another question</button>
+              <button type="submit" name="submit" id="submitQues" class="btn btn-outline-primary my-1 p-2 w-100" value="save" >save</button>
+              <button type="submit" name="submit" id="addNextQues" class="btn btn-outline-primary my-1 p-2 w-100" value="addNext" >save and add another question</button>
             </div>
             <div id='updateGroup' class="btn-group w-100" role="group">
               <button type="submit" name="submit" id="updateQues" class="btn btn-outline-primary my-1 p-2 w-100" value="update">update</button>

@@ -296,6 +296,16 @@ function preview(id) {
             $('#pre-title').text(oldData.title);
             $('#pre-description').text(oldData.des);
             $('#pre-explain').text(oldData.exp);
+            for (var i = 0; i < oldData.secnum; i++) {
+                if (oldData.type == 'single') {
+                    $('#pre-secs-blk').append($("<input />", {
+                        'id': "pre-sec"+i,
+                        'type': "radio",
+                        'class': "sectionInput",
+                    })).append($('<label />', {                            
+                    }).text(" "+ oldData["sec"+i]));
+                }
+            }
 
             $("#trash-btn, #deleteQues").attr("onclick","delQues("+id+")");
         }

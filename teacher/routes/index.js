@@ -59,6 +59,13 @@ router.get('/preview/:id', function(req, res) {
     if (err) {
       console.log(err);
     }
+    for (var i = rows[0]["secnum"]; i < 4; i++) {
+      delete rows[0]["sec"+i];
+      delete rows[0]["ans"+i];
+    }
+    delete rows[0]["user"];
+    delete rows[0]["video"];
+    delete rows[0]["id"];
     res.json(rows);
   });
 });
@@ -77,10 +84,9 @@ router.delete('/delete/:id', function(req, res) {
 });
 
 router.put('/update/:id', function(req, res) {
-  var id = req.params.id;
-  var sql = "UPDATE todo SET  WHERE id = ?";
-
-  db.query(sql, id, function(err, rows) {
+  var sql = "UPDATE teacher SET ? WHERE ?";
+  
+  db.query(sql, [req.body, {id: req.params.id}], function(err, rows) {
     if (err) {
       console.log(err);
     }

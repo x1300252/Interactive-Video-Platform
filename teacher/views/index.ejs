@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     
 <head>
@@ -95,7 +96,7 @@
 
         </div>
         <div id="editMode" class="container quesSlides">
-          <form id="quesForm" class="form-group quesForm" method="POST">
+          <form id="quesForm" class="form-group quesForm">
             <h1>Edit Question</h1>
             <input id="questype" type="hidden" name="questype" value=""/>
             <input id="time" type="hidden" name="time" value=""/>
@@ -109,11 +110,11 @@
             <textarea id="explain" name="explain" placeholder="explain" class="form-control my-2 required"></textarea>
             
             <div id='submitGroup' class="btn-group w-100" role="group">
-              <button type="submit" name="submit" id="submitQues" class="btn btn-outline-primary my-1 p-2 w-100" value="save" >save</button>
-              <button type="submit" name="submit" id="addNextQues" class="btn btn-outline-primary my-1 p-2 w-100" value="addNext" >save and add another question</button>
+              <button type="button" id="saveQues" class="btn btn-outline-primary my-1 p-2 w-100" onclick="save()">save</button>
+              <button type="button" id="addNextQues" class="btn btn-outline-primary my-1 p-2 w-100" onclick="addNext()">save and add another question</button>
             </div>
             <div id='updateGroup' class="btn-group w-100" role="group">
-              <button type="submit" name="submit" id="updateQues" class="btn btn-outline-primary my-1 p-2 w-100" value="update">update</button>
+              <button type="button" id="updateQues" class="btn btn-outline-primary my-1 p-2 w-100">update</button>
               <button type="button" id="deleteQues" class="btn btn-outline-danger my-1 p-2 w-100">delete</button>
             </div>
           </form>

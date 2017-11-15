@@ -5,19 +5,12 @@ $(document).ready(function() {
         for (var i = 0; i < data.length; i++)
             addToList(data[i].time, data[i].id, data[i].title);
     });
+
+    $('#quesForm').validate();
 });
 
 $.validator.setDefaults({
     submitHandler:function(form, event){
-        var status = submitQues();
-        if (status) {
-            resetForm();
-            if ($("input[name='submit']").val() == "save") {
-                closeBlock(); 
-            } else {
-                setTime();
-            }
-        }
         return false;
     },
     errorPlacement: function(error, element) {
@@ -30,10 +23,6 @@ $.validator.setDefaults({
     unhighlight:function(element, errorClass, validClass){
         $(element).removeClass(errorClass);      
     }
-});
-
-$().ready(function() {
-    $("#quesForm").validate();
 });
 
 function popBlock() {
@@ -149,7 +138,7 @@ function addSec(sectext, ans) {
         'name': "ans",
         'type': ($("#questype").val() == "single") ? "radio" : "checkbox",
         'class': "sectionInput"
-      }));
+      }).attr("checked",(ans==1)?true:false));
     }
 
     var secbox = $("<input>", {
@@ -239,7 +228,7 @@ function quesSerialize() {
         'title': $('#title').val(),
         'des': $('#description').val(),
         'exp': $('#explain').val(),
-        'secnum': $("input[name='sec']").length,
+        'secnum': $("input[name^='sec']").length,
         'time': Math.floor($('#time').val())
     }
 
@@ -290,13 +279,13 @@ function submitQues() {
 }
 
 function preview(id) {
-    var quesData = {};
+    var oldData = {};
     $.ajax({
         url: "preview/"+id,
         type: 'GET',
         data: id,
         success: function(data) {
-            quesData = data[0];
+            oldData = data[0];
             popBlock();
         
             $('#update-btn, #trash-btn').show();
@@ -304,12 +293,11 @@ function preview(id) {
 
             $('#previewMode').show();
 
-            $('#pre-title').text(quesData.title);
-            $('#pre-description').text(quesData.des);
-            $('#pre-explain').text(quesData.exp);
+            $('#pre-title').text(oldData.title);
+            $('#pre-description').text(oldData.des);
+            $('#pre-explain').text(oldData.exp);
 
             $("#trash-btn, #deleteQues").attr("onclick","delQues("+id+")");
-            $("#updateQues").attr("onclick","updateQues("+id+")");
         }
     });
 
@@ -317,16 +305,61 @@ function preview(id) {
         $('#previewMode, #submitGroup, #trash-btn, #update-btn').hide();
         $('#editMode, #updateGroup').show();
 
-        $('#questype').val(quesData.type);
-        $('#time').val(quesData.time);
-        $('#title').val(quesData.title);
-        $('#description').val(quesData.des);
-        $('#explain').val(quesData.exp);
+        $('#questype').val(oldData.type);
+        $('#time').val(oldData.time);
+        $('#title').val(oldData.title);
+        $('#description').val(oldData.des);
+        $('#explain').val(oldData.exp);
         $("#quesSections > .section").remove();
-        for (var i = 0; i < quesData.secnum; i++) {
-            addSec(quesData["sec"+i], quesData["ans"+i]);
+        for (var i = 0; i < oldData.secnum; i++) {
+            addSec(oldData["sec"+i], oldData["ans"+i]);
         }
     })
+
+    $("#updateQues").click(function() {
+        var newData = quesSerialize();
+        var diffData = {};
+
+        for (var item in oldData) {
+            if (!(item in newData))
+               diffData[item] = undefined;  // property gone so explicitly set it undefined
+            else if (oldData[item] !== newData[item])
+               diffData[item] = newData[item];  // property in both but has changed
+        }
+
+        for (item in newData) {
+            if (!(item in oldData))
+               diffData[item] = newData[item]; // property is new
+        }
+
+        if (Object.keys(diffData).length != 0) {
+            $.ajax({
+                url: "update/"+id,
+                type: 'PUT',
+                data: diffData,
+                success: function() {
+                    closeBlock();
+                    $('#quesCard'+id).text(timeTransfer(newData.time)+" "+diffData.title);
+                }
+            });
+        }
+    });
+}
+
+function save() {
+    console.log('aaa');
+    if ($('#quesForm').valid() && submitQues()) {
+        resetForm();
+        closeBlock(); 
+    }
+}
+
+function addNext() {
+    console.log('aaa');
+    if ($('#quesForm').valid() && submitQues()) {
+        resetForm();
+        setTime(); 
+    }
 }
 
 function delQues(id) {
@@ -336,18 +369,6 @@ function delQues(id) {
         success: function() {
             closeBlock();
             $('#quesCard'+id)[0].remove();
-        }
-    });
-}
-
-function updateQues(id) {
-    var quesData = quesSerialize();
-    $.ajax({
-        url: "update/"+id,
-        type: 'PUT',
-        success: function() {
-            closeBlock();
-            $('#quesCard'+id)[0].text(quesData.time+" "+quesData.title);
         }
     });
 }

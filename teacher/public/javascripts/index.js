@@ -25,6 +25,8 @@ $.validator.setDefaults({
     }
 });
 
+var playerInstance = jwplayer("myElement");
+
 function popBlock() {
     $('.circle').hide();
     $('#QuesBlock').show();
@@ -57,7 +59,6 @@ function closeBlock() {
     $('#update-btn, #trash-btn').hide();
 
     playerInstance.setControls(true);
-    playerInstance.play(true);
 }
 
 function minimizeBlock() {
@@ -290,6 +291,8 @@ function preview(id) {
         
             $('#update-btn, #trash-btn').show();
             $('#back-btn, #selectType, #editMode').hide();
+            $("#pre-secs-blk > .pre-sec").remove();
+            $("#pre-secs-blk > label").remove();
 
             $('#previewMode').show();
 
@@ -301,9 +304,26 @@ function preview(id) {
                     $('#pre-secs-blk').append($("<input />", {
                         'id': "pre-sec"+i,
                         'type': "radio",
-                        'class': "sectionInput",
+                        'class': "sectionInput pre-sec",
                     })).append($('<label />', {                            
                     }).text(" "+ oldData["sec"+i]));
+                }
+
+                else if (oldData.type == 'multiple') {
+                    $('#pre-secs-blk').append($("<input />", {
+                        'id': "pre-sec"+i,
+                        'type': "checkbox",
+                        'class': "sectionInput pre-sec",
+                    })).append($('<label />', {                            
+                    }).text(" "+ oldData["sec"+i]));
+                }
+
+                else {
+                    $('#pre-secs-blk').append($("<button>", {
+                        'id': "pre-sec"+i,
+                        'class': "sectionInput pre-sec btn w-100",
+                        'onclick': "playerInstance.seek("+oldData["ans"+i]+");closeBlock();"
+                    }).text(oldData["sec"+i]));
                 }
             }
 

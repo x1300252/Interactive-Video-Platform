@@ -1,14 +1,10 @@
 $(document).ready(function() {
     resetForm();
-    $("#quesForm").validate();
     data = $.getJSON("/getList", function(data) {
         for (var i = 0; i < data.length; i++)
             addToList(data[i].time, data[i].id, data[i].title);
     });
-
-    $('#quesForm').validate();
 });
-
 $.validator.setDefaults({
     submitHandler:function(form, event){
         return false;
@@ -24,8 +20,6 @@ $.validator.setDefaults({
         $(element).removeClass(errorClass);      
     }
 });
-
-var playerInstance = jwplayer("myElement");
 
 function popBlock() {
     $('.circle').hide();
@@ -52,6 +46,8 @@ function setTime() {
 
 function closeBlock() {
     resetForm();
+    var validator = $('#quesForm').validate();
+    validator.resetForm();
 
     $('#add-btn').show();
     $('#QuesBlock').hide();
@@ -101,6 +97,9 @@ function selectType(e) {
 }
 
 function addSecBtnStatus() {
+    $('#addSection').removeClass('btn-danger');
+    $('#addSection').addClass('btn-primary');
+
     if ($('#quesSections > .section').length == 4) {
         $('#addSection').prop("disabled", true);
     }
@@ -259,7 +258,8 @@ function quesSerialize() {
 
 function submitQues() {
     if ($('#quesSections > .section').length == 0) {
-        alert("please add sections!");
+        $('#addSection').addClass('btn-danger');
+        $('#addSection').removeClass('btn-primary');
         return false;
     }
 
@@ -274,7 +274,6 @@ function submitQues() {
             sortQuesList();
         }
     });
-    console.log(quesData);
 
     return true;
 }
@@ -377,7 +376,6 @@ function preview(id) {
 }
 
 function save() {
-    console.log('aaa');
     if ($('#quesForm').valid() && submitQues()) {
         resetForm();
         closeBlock(); 
@@ -385,7 +383,6 @@ function save() {
 }
 
 function addNext() {
-    console.log('aaa');
     if ($('#quesForm').valid() && submitQues()) {
         resetForm();
         setTime(); 

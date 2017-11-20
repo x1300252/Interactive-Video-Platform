@@ -29,7 +29,6 @@
   margin-top: 20px;
   margin-bottom: 20px;
   padding: 20px;
-  background-color: #27B1BE;
   border-radius: 0px;
   border: 0px;
 }
@@ -81,7 +80,6 @@
 #quesSections input[type=checkbox] {
   display: none;
 }
-
 .errorInput {
-  border-color:red;
+  border-color: red;
 }

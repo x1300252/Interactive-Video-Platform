@@ -119,16 +119,13 @@ function addSec(sectext, ans) {
       var ansbtn = $("<span>", {
         'class': "input-group-btn"
       }).append($("<button>", {
-        'type': "button",
-        'class': "btn btn-outline-success goto_btn"+(ans!=-1?" active":""),
         'aria-pressed': "false",
-        'onclick': "goTo("+$('#quesSections > .section').length+")"
-      }).text(ans==-1 ? "go to" : timeTransfer(ans))).append($("<input>", {
         'name': "ans",
-        'type': "hidden",
-        'class': "sectionInput",
-        'value': ""
-      }));
+        'type': "button",
+        'class': "sectionInput required btn btn-outline-success goto_btn"+(ans!=-1?" active":""),
+        'value': ans==-1 ? "" : ans,
+        'onclick': "goTo("+$('#quesSections > .section').length+")"
+      }).text(ans==-1 ? "go to" : timeTransfer(ans)));
     }
     else {
       var ansbtn = $("<label>", {
@@ -137,7 +134,7 @@ function addSec(sectext, ans) {
       }).text("ans").append($("<input>", {
         'name': "ans",
         'type': ($("#questype").val() == "single") ? "radio" : "checkbox",
-        'class': "sectionInput"
+        'class': "sectionInput required"
       }).attr("checked",(ans==1)?true:false));
     }
 
@@ -174,13 +171,12 @@ function goTo(btnIndex) {
     playerInstance.setControls(true);
     playerInstance.play(false);
 
-    console.log(btnIndex);
-
     $('#branch-goto-btn').click(function() {
         selectBtn.text(timeTransfer(playerInstance.getPosition('VOD')));
-        selectBtn.next("input").val(Math.floor(playerInstance.getPosition('VOD')));
+        selectBtn.val(Math.floor(playerInstance.getPosition('VOD')));
         selectBtn.removeClass("btn-outline-success");
         selectBtn.addClass("btn-success active");
+        //playerInstance.seek($('#time').val());
     });
 }
 
@@ -239,7 +235,7 @@ function quesSerialize() {
         quesData["sec"+i] = data[i].value;
     }
 
-    data = $("input[name='ans']");
+    data = ($('#questype').val()=="branch") ? $("button[name='ans']") : $("input[name='ans']");
     var len = data.length;
     var ans = [];
     if ($('#questype').val() == "branch") {
@@ -252,6 +248,7 @@ function quesSerialize() {
             quesData["ans"+i] = data[i].checked ? 1 : -1;
         }
     }
+    console.log(quesData);
 
     return quesData;
 }

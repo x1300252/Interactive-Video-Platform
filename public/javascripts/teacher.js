@@ -234,6 +234,7 @@ function quesSerialize() {
         'title': $('#title').val(),
         'des': $('#description').val(),
         'exp': $('#explain').val(),
+        'secnum': $('#addSection').val(),
         'time': Math.floor($('#time').val())
     }
 
@@ -244,7 +245,7 @@ function quesSerialize() {
         quesData["sec"+i] = data[i].value;
     }
 
-    data = $("button[name^='ans']");
+    data = (quesData['type'] == 'branch')?$("button[name^='ans']"):$("input[name='ans']");
     var len = data.length;
     var ans = [];
     if ($('#questype').val() == "branch") {

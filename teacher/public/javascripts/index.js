@@ -14,10 +14,20 @@ $.validator.setDefaults({
     },
     errorClass: "errorInput",
     highlight:function(element, errorClass, validClass){
-        $(element).addClass(errorClass);      
+        if ($('#quesSections > .section').length == 0) {
+            $('#addSection').addClass('btn-danger');
+            $('#addSection').removeClass('btn-primary');
+        }
+        if ($(element).is(':radio') || $(element).is(':checkbox')) {
+            $(element.form).find('div').addClass(errorClass);       
+        }
+        $(element).addClass(errorClass);
     },
     unhighlight:function(element, errorClass, validClass){
-        $(element).removeClass(errorClass);      
+        if ($(element).is(':radio') || $(element).is(':checkbox')) {
+            $(element.form).find('div').removeClass(errorClass);       
+        }
+        $(element).removeClass(errorClass);
     }
 });
 
@@ -46,8 +56,6 @@ function setTime() {
 
 function closeBlock() {
     resetForm();
-    var validator = $('#quesForm').validate();
-    validator.resetForm();
 
     $('#add-btn').show();
     $('#QuesBlock').hide();
@@ -87,6 +95,7 @@ function selectType(e) {
 
     $("#selectType").hide();
     $("#editMode").show();
+    addSecBtnStatus();
 
     if ($(e.target).attr("id") === String("branch")) {
         $('#addNextQues').addClass("disabled");
@@ -109,12 +118,6 @@ function addSecBtnStatus() {
 }
 
 function addSec(sectext, ans) {
-    var container = $("#quesSections");
-    
-    var row = $("<div>", {
-        'class': "row mx-0 my-1 section input-group",
-    });
-    
     if ($("#questype").val() == "branch") {
       var ansbtn = $("<span>", {
         'class': "input-group-btn"
@@ -128,15 +131,15 @@ function addSec(sectext, ans) {
       }).text(ans==-1 ? "go to" : timeTransfer(ans)));
     }
     else {
-      var ansbtn = $("<label>", {
-        'class': "input-group-addon btn btn-success check_btn"+(ans==1?" active":""),
-        'aria-pressed': "true"
-      }).text("ans").append($("<input>", {
-        'name': "ans",
-        'type': ($("#questype").val() == "single") ? "radio" : "checkbox",
-        'class': "sectionInput required"
-      }).attr("checked",(ans==1)?true:false));
-    }
+        var ansbtn = $("<div>", {
+          'class': "input-group-addon btn btn-outline-success check_btn"+(ans==1?" active":""),
+          'aria-pressed': "true"
+        }).text("ans").append($("<input>", {
+          'name': "ans",
+          'type': ($("#questype").val() == "single") ? "radio" : "checkbox",
+          'class': "sectionInput required"
+        }).attr("checked",(ans==1)?true:false));
+      }
 
     var secbox = $("<input>", {
         'name': "sec"+$("#addSection").attr("cnt"),
@@ -156,8 +159,10 @@ function addSec(sectext, ans) {
       'aria-hidden': "true"
     })));
 
-    container.append(row);
-    row.append(ansbtn, secbox,delbtn);
+    $("#quesSections").append($("<div>", {
+        'class': "row mx-0 my-1 section input-group",
+    }).append(ansbtn, secbox, delbtn));
+    
     $("#addSection").attr("cnt", $("#addSection").attr("cnt")+1);
     addSecBtnStatus();
   }
@@ -211,6 +216,8 @@ function timeTransfer(s) {
 }
 
 function resetForm() {
+    var validator = $('#quesForm').validate();
+    validator.resetForm();
     $("#quesSections > .section").remove();
     $("#quesForm")[0].reset();
     $("#selectType").show();
@@ -254,12 +261,6 @@ function quesSerialize() {
 }
 
 function submitQues() {
-    if ($('#quesSections > .section').length == 0) {
-        $('#addSection').addClass('btn-danger');
-        $('#addSection').removeClass('btn-primary');
-        return false;
-    }
-
     var quesData = quesSerialize();
 
     $.ajax({
@@ -276,6 +277,7 @@ function submitQues() {
 }
 
 function preview(id) {
+    resetForm();
     var oldData = {};
     $.ajax({
         url: "preview/"+id,

@@ -18,13 +18,6 @@ db.connect(function(err) {
 });
 /* GET home page. */
 router.get('/', function(req, res) {
-  var sql = "ALTER TABLE teacher AUTO_INCREMENT = 0";
-  
-    db.query(sql, function(err, rows) {
-      if (err) {
-        console.log(err);
-      }
-  });
   res.render('teacher');
 });
 
@@ -34,7 +27,6 @@ router.get('/getList', function(req, res) {
     if (err) {
         console.log(err);
     }
-    //res.json(rows);
     res.json(rows);
   });
 });

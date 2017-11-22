@@ -1,6 +1,6 @@
 $(document).ready(function() {
     resetForm();
-    data = $.getJSON("/getList", function(data) {
+    data = $.getJSON("/teacher/getList", function(data) {
         for (var i = 0; i < data.length; i++)
             addToList(data[i].time, data[i].id, data[i].title);
     });
@@ -264,7 +264,7 @@ function submitQues() {
     var quesData = quesSerialize();
 
     $.ajax({
-        url: "addQues/",
+        url: "/teacher/addQues/",
         type: 'POST',
         data: quesData,
         success: function(result) {
@@ -280,7 +280,7 @@ function preview(id) {
     resetForm();
     var oldData = {};
     $.ajax({
-        url: "preview/"+id,
+        url: "/teacher/preview/"+id,
         type: 'GET',
         data: id,
         success: function(data) {
@@ -362,7 +362,7 @@ function preview(id) {
 
         if (Object.keys(diffData).length != 0) {
             $.ajax({
-                url: "update/"+id,
+                url: "/teacher/update/"+id,
                 type: 'PUT',
                 data: diffData,
                 success: function() {
@@ -390,7 +390,7 @@ function addNext() {
 
 function delQues(id) {
     $.ajax({
-        url: "delete/"+id,
+        url: "/teacher/delete/"+id,
         type: 'DELETE',
         success: function() {
             closeBlock();

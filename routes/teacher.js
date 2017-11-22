@@ -25,7 +25,7 @@ router.get('/', function(req, res) {
         console.log(err);
       }
   });
-  res.render('index');
+  res.render('teacher');
 });
 
 router.get('/getList', function(req, res) {

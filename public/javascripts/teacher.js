@@ -6,6 +6,10 @@ $(document).ready(function() {
     });
 });
 $.validator.setDefaults({
+    rules:{
+        secnum: {
+            min: 1
+        }},
     submitHandler:function(form, event){
         return false;
     },
@@ -14,18 +18,14 @@ $.validator.setDefaults({
     },
     errorClass: "errorInput",
     highlight:function(element, errorClass, validClass){
-        if ($('#quesSections > .section').length == 0) {
-            $('#addSection').addClass('btn-danger');
-            $('#addSection').removeClass('btn-primary');
-        }
         if ($(element).is(':radio') || $(element).is(':checkbox')) {
-            $(element.form).find('div').addClass(errorClass);       
+            $(element.form).find('span').addClass(errorClass);       
         }
         $(element).addClass(errorClass);
     },
     unhighlight:function(element, errorClass, validClass){
         if ($(element).is(':radio') || $(element).is(':checkbox')) {
-            $(element.form).find('div').removeClass(errorClass);       
+            $(element.form).find('span').removeClass(errorClass);       
         }
         $(element).removeClass(errorClass);
     }
@@ -106,8 +106,7 @@ function selectType(e) {
 }
 
 function addSecBtnStatus() {
-    $('#addSection').removeClass('btn-danger');
-    $('#addSection').addClass('btn-primary');
+    $("#addSection").val($('.section').length);
 
     if ($('#quesSections > .section').length == 4) {
         $('#addSection').prop("disabled", true);
@@ -118,22 +117,25 @@ function addSecBtnStatus() {
 }
 
 function addSec(sectext, ans) {
+    $('#addSection').removeClass('errorInput');
+    $("#addSection").val(Number($("#addSection").val()+1));
     if ($("#questype").val() == "branch") {
       var ansbtn = $("<span>", {
         'class': "input-group-btn"
       }).append($("<button>", {
         'aria-pressed': "false",
-        'name': "ans",
+        'name': "ans"+$("#addSection").attr("cnt"),
         'type': "button",
         'class': "sectionInput required btn btn-outline-success goto_btn"+(ans!=-1?" active":""),
         'value': ans==-1 ? "" : ans,
-        'onclick': "goTo("+$('#quesSections > .section').length+")"
+        'onclick': "goTo("+$("#addSection").attr("cnt")+")"
       }).text(ans==-1 ? "go to" : timeTransfer(ans)));
     }
     else {
-        var ansbtn = $("<div>", {
+        var ansbtn = $("<span>", {
           'class': "input-group-addon btn btn-outline-success check_btn"+(ans==1?" active":""),
-          'aria-pressed': "true"
+          'aria-pressed': "true",
+          'onclick': "$('.check_btn, .check_btn > input').removeClass('errorInput')"
         }).text("ans").append($("<input>", {
           'name': "ans",
           'type': ($("#questype").val() == "single") ? "radio" : "checkbox",
@@ -163,12 +165,12 @@ function addSec(sectext, ans) {
         'class': "row mx-0 my-1 section input-group",
     }).append(ansbtn, secbox, delbtn));
     
-    $("#addSection").attr("cnt", $("#addSection").attr("cnt")+1);
+    $("#addSection").attr("cnt", Number($("#addSection").attr("cnt"))+1);
     addSecBtnStatus();
   }
 
 function goTo(btnIndex) {
-    selectBtn = $('#quesSections > .section').eq(btnIndex).find('.goto_btn');
+    selectBtn = $("button[name='"+'ans'+btnIndex+"']");
     $('#circle-btn').show()
     $('#branch-goto-btn').show();
     $('#QuesBlock').hide();
@@ -177,9 +179,10 @@ function goTo(btnIndex) {
     playerInstance.play(false);
 
     $('#branch-goto-btn').click(function() {
+        console.log(selectBtn);
         selectBtn.text(timeTransfer(playerInstance.getPosition('VOD')));
         selectBtn.val(Math.floor(playerInstance.getPosition('VOD')));
-        selectBtn.removeClass("btn-outline-success");
+        selectBtn.removeClass("btn-outline-success errorInput");
         selectBtn.addClass("btn-success active");
         //playerInstance.seek($('#time').val());
     });
@@ -231,7 +234,6 @@ function quesSerialize() {
         'title': $('#title').val(),
         'des': $('#description').val(),
         'exp': $('#explain').val(),
-        'secnum': $("input[name^='sec']").length,
         'time': Math.floor($('#time').val())
     }
 
@@ -242,7 +244,7 @@ function quesSerialize() {
         quesData["sec"+i] = data[i].value;
     }
 
-    data = ($('#questype').val()=="branch") ? $("button[name='ans']") : $("input[name='ans']");
+    data = $("button[name^='ans']");
     var len = data.length;
     var ans = [];
     if ($('#questype').val() == "branch") {
@@ -261,6 +263,9 @@ function quesSerialize() {
 }
 
 function submitQues() {
+ /*    if ($('#quesSections > .section').length == 0) {
+        return false;
+    } */
     var quesData = quesSerialize();
 
     $.ajax({

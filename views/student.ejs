@@ -1,10 +1,8 @@
-<!DOCTYPE html>
 <html>
-    
-<head>
+  <head>
   <title>JGLEE JWPlayer Test</title>
   <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
-
+  
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
@@ -18,28 +16,25 @@
 
   <script src="/javascripts/student.js"></script>
   <!-- for ui form -->
-  <link rel="stylesheet" type="text/css" href="/stylesheets/addBtn.css">
   <link rel="stylesheet" type="text/css" href="/stylesheets/video.css">
   <link rel="stylesheet" type="text/css" href="/stylesheets/QuesBlock.css">
-  <link rel="stylesheet" type="text/css" href="/stylesheets/QuesList.css">
-</head>
-
-<body>
-
-  <div id="video_box" class="video">
-      <div id="myElement">This text will be replaced with a player.</div>
-      <script type="text/javascript">
-        var playerInstance = jwplayer("myElement")
-        playerInstance.setup({
-          title: "the three little pigs",
-          width: "720",
-          height: "480",
-          aspectratio: "16:9",
-          autostart: false,
-          repeat: false,
-          abouttext: "故宮教育頻道",
-          aboutlink: "http://npm.nchc.org.tw",
-          sources: [{
+  </head>
+  <body>
+  
+  
+  <div id="video_box", class = "video">
+    <div id="myElement">This text will be replaced with a player.</div>
+    <script type="text/javascript">
+      var playerInstance = jwplayer("myElement");
+      playerInstance.setup({
+        width: "720",
+        height: "480",
+        aspectratio: "16:9",
+        autostart: "false",
+        repeat: "false",
+        abouttext: "故宮教育頻道",
+        aboutlink: "http://npm.nchc.org.tw",
+        sources: [{
           file: "/images/1.mp4",
           label: "1080p_test"
           }, {
@@ -52,12 +47,10 @@
           }, {
           file: "/images/1.mp4",
           label: "360p_test"
-          }]
-        });
-      </script>
+        }]
+      });
+    </script>
+  
   </div>
-</body>
-</html>
-
-
-    
+  </body>
+  </html>

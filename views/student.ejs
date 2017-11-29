@@ -50,6 +50,22 @@
         }]
       });
     </script>
+    <div id="QuesBlock">
+        <form id="quesMode">
+            <h1 id="ques_title"></h1>
+            <p id="ques_des"></p>
+            <div id="ques_secs_blk">
+            </div>
+            <div id='submitGroup' class="btn-group w-100" role="group">
+                <button type="button" id="submitQues" class="btn btn-outline-primary my-1 p-2 w-100" onclick="chkAns();">submit</button>
+                <button type="reset" id="resetQues" class="btn btn-outline-primary my-1 p-2 w-100">reset</button>
+                <button type="button" id="giveUpQues" class="btn btn-outline-primary my-1 p-2 w-100" onclick="clzQues();">give up</button>
+            </div>
+          </form>
+        <div id="expMode">
+          <p id="ques_exp"></p>
+        </div>
+    </div>
   
   </div>
   </body>

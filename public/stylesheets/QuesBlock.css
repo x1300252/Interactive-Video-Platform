@@ -32,12 +32,22 @@
   border-radius: 0px;
   border: 0px;
 }
-#QuesBlock #editMode {
+#QuesBlock #editMode,
+#QuesBlock #quesMode,
+#QuesBlock #expMode {
   display: none;
   width: 520px;
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+}
+#QuesBlock #quesMode {
+  position: relative;
+}
+#QuesBlock #submitGroup {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
 }
 #QuesBlock h1 {
   font-weight: bold;

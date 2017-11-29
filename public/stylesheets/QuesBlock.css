@@ -44,7 +44,7 @@
 #QuesBlock #quesMode {
   position: relative;
 }
-#QuesBlock #submitGroup {
+#QuesBlock #btnGroup {
   position: absolute;
   bottom: 0px;
   left: 0px;

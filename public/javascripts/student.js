@@ -20,12 +20,12 @@ $(document).ready(function() {
     });
 
     playerInstance.on('time', function(x){
+        console.log(quesptr);
         if(quesptr < ques.length && parseInt(x.position,10)==ques[quesptr].time) {
             playerInstance.pause(true);
             playerInstance.setControls(false);
             popQues(quesptr++);
         }
-        for (; quesptr < ques.length && parseInt(x.position,10)<ques[quesptr].time; quesptr++);
     });
 });
 
@@ -85,6 +85,8 @@ function clzQues() {
 function branchto(time) {
     branch=true;
     playerInstance.seek(time);
+    for (; quesptr < ques.length && time<ques[quesptr].time; quesptr++);
+    quesptr++;
     clzQues();
 }
 

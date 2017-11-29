@@ -1,5 +1,6 @@
 var quesptr=0;
 var ques = [];
+var branch = false;
 
 $(document).ready(function() {
     $.getJSON("/student/getList", function(data) {
@@ -10,22 +11,12 @@ $(document).ready(function() {
     console.log(ques);
 
     //disable jwplayer seek function
-    var maxPlayPosition = 0;
-    var seeking = false;
-    playerInstance.onTime(function (event) {
-        if (!seeking) 
-            maxPlayPosition = Math.max(event.position, maxPlayPosition)
-    }).onPlaylistItem(function () {
-        maxPlayPosition = 0
-    }).onSeek(function (event) {
-        if (!seeking) {
-            if (event.offset > maxPlayPosition) {
-                seeking = true;
-                setTimeout(function () {
-                    playerInstance.seek(maxPlayPosition)
-                }, 100)
-            }
-        } else seeking = false
+    playerInstance.on('seek', function (event) {
+        if (event.offset <= event.position || branch) {
+            branch = false;
+        }
+        else
+            playerInstance.seek(event.position);
     });
 
     playerInstance.on('time', function(x){
@@ -34,6 +25,7 @@ $(document).ready(function() {
             playerInstance.setControls(false);
             popQues(quesptr++);
         }
+        for (; quesptr < ques.length && parseInt(x.position,10)<ques[quesptr].time; quesptr++);
     });
 });
 
@@ -71,7 +63,7 @@ function popQues(quesptr) {
             $('#ques_secs_blk').append($("<button>", {
                 'id': "ques_sec"+i,
                 'class': "sectionInput ques_sec btn w-100",
-                'onclick': "playerInstance.seek("+ques[quesptr]["ans"+i]+");closeBlock();"
+                'onclick': "branchto("+ques[quesptr]["ans"+i]+")"
             }).text(ques[quesptr]["sec"+i]));
         }
     }
@@ -88,6 +80,12 @@ function clzQues() {
         playerInstance.pause(false);
         playerInstance.setControls(true);
     }
+}
+
+function branchto(time) {
+    branch=true;
+    playerInstance.seek(time);
+    clzQues();
 }
 
 

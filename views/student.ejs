@@ -25,44 +25,21 @@
   <div id="video_box", class = "video">
     <div id="myElement">This text will be replaced with a player.</div>
     <script type="text/javascript">
-      var playerInstance = jwplayer("myElement");
-      playerInstance.setup({
-        width: "720",
-        height: "480",
-        aspectratio: "16:9",
-        autostart: "false",
-        repeat: "false",
-        abouttext: "故宮教育頻道",
-        aboutlink: "http://npm.nchc.org.tw",
-        sources: [{
-          file: "/images/1.mp4",
-          label: "1080p_test"
-          }, {
-          file: "/images/1.mp4",
-          label: "480p_test"
-          }, {
-          file: "/images/1.mp4",
-          label: "720p_test",
-          'default': 'true'
-          }, {
-          file: "/images/1.mp4",
-          label: "360p_test"
-        }]
-      });
+      
     </script>
     <div id="QuesBlock">
         <form id="quesMode">
             <h1 id="ques_title"></h1>
             <p id="ques_des"></p>
-            <div id="ques_secs_blk">
+            <div id="ques_secs_blk" data-toggle="buttons">
             </div>
             <div id='btnGroup' class="btn-group w-100" role="group">
-                <button type="button" id="submitQues" class="btn btn-outline-primary my-1 p-2 w-100" onclick="chkAns();">submit</button>
+                <button type="button" id="submitQues" class="btn btn-outline-primary my-1 p-2 w-100">submit</button>
                 <button type="reset" id="resetQues" class="btn btn-outline-primary my-1 p-2 w-100">reset</button>
-                <button type="button" id="giveUpQues" class="btn btn-outline-primary my-1 p-2 w-100" onclick="clzQues();">give up</button>
             </div>
           </form>
         <div id="expMode">
+          <h1 id="ans_correct"></h1>
           <p id="ques_exp"></p>
         </div>
     </div>

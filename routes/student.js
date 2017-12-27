@@ -31,4 +31,15 @@ router.get('/getList', function(req, res) {
   });
 });
 
+router.post('/ans', function(req, res) {
+  var sql = "INSERT INTO student SET ?";
+  db.query(sql, req.body,function(err, rows) {
+    if (err) {
+      console.log(err);
+    }
+    
+    res.json({'id': rows.insertId});
+  });
+});
+
 module.exports = router;

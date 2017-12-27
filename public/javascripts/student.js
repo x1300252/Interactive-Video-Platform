@@ -1,7 +1,6 @@
 var quesptr=0;
 var ques = [];
 var branch = false;
-var studentAns = [];
 var time_cnt=0
 var timer;
 
@@ -11,40 +10,15 @@ $(document).ready(function() {
             ques.push(data[i]);
     });
 
-    var playerInstance = jwplayer("myElement");
-    playerInstance.setup({
-      width: "720",
-      height: "480",
-      aspectratio: "16:9",
-      autostart: "false",
-      repeat: "false",
-      abouttext: "故宮教育頻道",
-      aboutlink: "http://npm.nchc.org.tw",
-      sources: [{
-        file: "/images/1.mp4",
-        label: "1080p_test"
-        }, {
-        file: "/images/1.mp4",
-        label: "480p_test"
-        }, {
-        file: "/images/1.mp4",
-        label: "720p_test",
-        'default': 'true'
-        }, {
-        file: "/images/1.mp4",
-        label: "360p_test"
-      }]
-    });
-
     console.log(ques);
 
     //disable jwplayer seek function
-    playerInstance.on('seek', function (event) {
+    /* playerInstance.on('seek', function (event) {
         if (event.offset <= event.position || branch)
             branch = false;
         else
             playerInstance.seek(event.position);
-    });
+    }); */
 
     playerInstance.on('time', function(x){
         if(quesptr < ques.length && parseInt(x.position,10)==ques[quesptr].time) {
@@ -144,4 +118,10 @@ function chkAns(quesptr) {
         $('#expMode').attr("onclick", "clzQues();");
         $('#ans_correct').text(state);
     }
+
+    $.ajax({
+        url: "/student/ans",
+        type: 'POST',
+        data: ans
+    });
 }
